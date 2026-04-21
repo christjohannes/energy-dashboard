@@ -1,0 +1,137 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+p, span, label, text {
+  font-size: 12px;
+  font-weight: 400;
+  font-family: InterRegular;
+  color: #0f151a;
+}
+
+@font-face {
+   font-family: Source Serif Pro;
+   src: url(https://static.rndtech.de/share/rnd/jchrist/SourceSerifPro-Regular.ttf);
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'DIN Next LT Pro';
+    font-style: normal;
+    font-weight: 700;
+    src: url(https://static.rndtech.de/share/rnd/jchrist/DINNextLTPro-Bold.woff2) format("woff2"), 
+      url(https://static.rndtech.de/share/rnd/jchrist/DINNextLTPro-Bold.woff) format("woff"), 
+      url(https://static.rndtech.de/share/rnd/jchrist/DINNextLTPro-Bold.ttf) format("truetype")
+}
+  
+@font-face {
+    font-display: swap;
+    font-family: 'InterRegular';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://static.rndtech.de/share/rnd/jchrist/Inter-Regular.woff2) format("woff2"),
+    url(https://static.rndtech.de/share/rnd/jchrist/Inter-Regular.woff) format("woff"), 
+    url(https://static.rndtech.de/share/rnd/jchrist/Inter-Regular.ttf) format("truetype")
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'InterMedium';
+    font-style: normal;
+    font-weight: 500;
+    src: url(https://static.rndtech.de/share/rnd/jchrist/Inter-Medium.woff2) format("woff2"), 
+      url(https://static.rndtech.de/share/rnd/jchrist/Inter-Medium.woff) format("woff"), 
+      url(https://static.rndtech.de/share/rnd/jchrist/Inter-Medium.ttf) format("truetype")
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'InterBold';
+    font-style: normal;
+    font-weight: 700;
+    src: url(https://static.rndtech.de/share/rnd/jchrist/Inter-Bold.woff2) format("woff2"), 
+      url(https://static.rndtech.de/share/rnd/jchrist/Inter-Bold.woff) format("woff"), 
+      url(https://static.rndtech.de/share/rnd/jchrist/Inter-Bold.ttf) format("truetype")
+}
+
+h2 {
+    color: rgb(15, 21, 26);
+    font-family: "DIN Next LT Pro", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0px 0px 0px 0px;
+}
+
+.title {
+    color: rgb(15, 21, 26);
+    font-family: "DIN Next LT Pro", sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0px 0px 0px 0px;
+}
+
+.subtitle {
+    font-size: 17px;
+    font-family: InterRegular;  
+    font-weight: 400;
+    color: rgb(15, 21, 26);
+    letter-spacing: 0px;
+    line-height: 26px;
+    margin: 0px;   
+  }
+
+.credits {
+    font-size: 11px;
+    font-family: InterRegular, sans-serif;
+    font-weight: 400;  
+    position:relative; 
+  }
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.top {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  border-bottom: "1px dashed #cbcfd1";
+  padding: "10px";
+}
+
+.left {
+  width: 50%;
+  overflow: hidden;
+  border-right: "1px dashed #cbcfd1"; 
+  padding: "10px"
+}
+
+.right {
+  width: 50%;
+  overflow: hidden;
+  padding: "10px"
+}
+
+.bottom {
+  width: 50%;
+  overflow: hidden;
+  padding: "10px";
+  border-top: "1px dashed #cbcfd1";
+}
+
+@media (max-width: 650px) {
+  .top {
+    flex-direction: column;
+    height: auto;
+    }
+
+  .left, .right, .bottom  {
+    width: 100%;
+    max-width: 100%;
+    border-top: "1px dashed #cbcfd1";
+  }
+}
