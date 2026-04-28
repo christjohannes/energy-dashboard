@@ -2,7 +2,7 @@ const TICK_LENGTH = 6;
 
 const formatNumber = (num) => num.toLocaleString();
 
-export const AxisLeft = ({ yScale, pixelsPerTick, boundsWidth, label }) => {
+export const AxisLeft = ({ yScale, pixelsPerTick, boundsWidth, label, gridOpacity }) => {
   const range = yScale.range();
   const height = range[0] - range[1];
   const numberOfTicksTarget = Math.floor(height / pixelsPerTick);
@@ -14,9 +14,9 @@ export const AxisLeft = ({ yScale, pixelsPerTick, boundsWidth, label }) => {
         fill="none"
         stroke="currentColor"
       />
+
       {yScale.ticks(numberOfTicksTarget).map((value) => (
         <g key={value} transform={`translate(0, ${yScale(value)})`}>
-          {/* Tick */}
           <line x2={-TICK_LENGTH} stroke="currentColor" />
           <text
             style={{
@@ -29,6 +29,13 @@ export const AxisLeft = ({ yScale, pixelsPerTick, boundsWidth, label }) => {
           </text>
         </g>
       ))}
+
+      {yScale.ticks(numberOfTicksTarget).map((value) => (
+        <g key={value} transform={`translate(0, ${yScale(value)})`}>
+          <line x1={0} x2={boundsWidth} stroke="currentColor" strokeOpacity={gridOpacity}/>
+        </g>
+      ))}
+
         {label && (
         <text
           x={-35}

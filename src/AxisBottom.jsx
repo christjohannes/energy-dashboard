@@ -29,7 +29,13 @@ export const AxisBottom = ({ xScale, boundsHeight, pixelsPerTick, label, axisLin
       {/* Grid */}
       {xScale.ticks(numberOfTicksTarget).map((value) => (
         <g key={value} transform={`translate(${xScale(value)}, 0)`}>
-          <line y2={-boundsHeight} y1={0} stroke="currentColor" strokeOpacity={gridOpacity}/>
+          <line 
+            y2={-boundsHeight} 
+            y1={0} 
+            stroke="currentColor" 
+            strokeOpacity={gridOpacity}
+            pointerEvents="none"
+            />
         </g>
       ))}
 

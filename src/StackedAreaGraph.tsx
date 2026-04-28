@@ -11,6 +11,8 @@ export const StackedAreaGraph  = ({
   width,
   height,
   data,
+  hoveredGroup, 
+  setHoveredGroup
 }: StackedAreaGraphProps) => {
 
   const axesRef = useRef(null);
@@ -63,19 +65,45 @@ export const StackedAreaGraph  = ({
         opacity={1}
         stroke="none"
         fill={colorScale(serie.key)}
-        fillOpacity={0.8}
+        fillOpacity={
+          hoveredGroup === null || hoveredGroup === serie.key
+            ? 1
+            : 0.4
+        }
+        onMouseEnter={() => setHoveredGroup(serie.key)}
+        onMouseLeave={() => setHoveredGroup(null)}
       />
     );
   });
 
   const legend = KEYS.map((key, i) => (
-    <g key={key} transform={`translate(0, ${i * 18})`}>
-        <rect width={12} height={12} fill={colorScale(key)} />
+    <g key={key} transform={`translate(0, ${i * 16})`}>
+        <rect 
+          width={12} 
+          height={12} 
+          fill={colorScale(key)}
+          fillOpacity={
+            hoveredGroup === null || hoveredGroup === key
+              ? 1
+              : 0.4
+          }
+          onMouseEnter={() => setHoveredGroup(key)}
+          onMouseLeave={() => setHoveredGroup(null)}
+          />
         <text
-        x={18}
-        y={10}
-        fontSize={12}
-        alignmentBaseline="top"
+          x={18}
+          y={10}
+          fontSize={12}
+          style={{fontFamily: "InterBold"}}
+          alignmentBaseline="top"
+          fill={colorScale(key)}
+          fillOpacity={
+            hoveredGroup === null || hoveredGroup === key
+              ? 1
+              : 0.4
+          }
+          onMouseEnter={() => setHoveredGroup(key)}
+          onMouseLeave={() => setHoveredGroup(null)}
         >
         {key}
         </text>
@@ -108,7 +136,7 @@ return (
         <g>
           <AxisLeft
             yScale={yScale}
-            pixelsPerTick={80}
+            pixelsPerTick={40}
             label="↑ TWh"
             width={boundsWidth}
           />

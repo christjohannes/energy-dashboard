@@ -43,17 +43,23 @@ const recent_year = data
     "other renewable": d.other_renewable + d.biofuel
   }).map(([name, value]) => ({ name, value })))
 
-const renewable_time = data
-  .filter(d => d.country === "World")
-  .map(d => ({
-    x: d.year,
-    y: d.other_renewable + d.biofuel + d.solar + d.wind + d.nuclear + d.hydro
-  }));
+const data_filtered = data.filter(d => d.country === "World");
 
-console.log(renewable_time)
+const renewable_time = {
+  "other renewable": data_filtered.map(d => ({
+  x: d.year,
+  y: (d.other_renewable ?? 0) + (d.biofuel ?? 0)
+})),
+  solar: data_filtered.map(d => ({ x: d.year, y: d.solar ?? 0 })),
+  wind: data_filtered.map(d => ({ x: d.year, y: d.wind ?? 0 })),
+  nuclear: data_filtered.map(d => ({ x: d.year, y: d.nuclear ?? 0 })),
+  hydro: data_filtered.map(d => ({ x: d.year, y: d.hydro ?? 0 })),
+};
 
 function App() {
   const [count, setCount] = useState(0)
+  const [hoveredGroup, setHoveredGroup] = useState(null);
+  const [hoveredCountry, setHoveredCountry] = useState(null);
 
   return (
     <>
@@ -71,7 +77,12 @@ function App() {
           <span className="subtitle">
             Primary energy in terawatt-hours in 2024
           </span>
-          <ResponsiveBarplot data={countries} height={620} />
+          <ResponsiveBarplot 
+            data={countries} 
+            height={620} 
+            hoveredCountry={hoveredCountry}
+            setHoveredCountry={setHoveredCountry}
+              />
         </div>
 
         {/* RIGHT */}
@@ -82,7 +93,12 @@ function App() {
             <span className="subtitle">
               Global primary energy in terawatt-hours
             </span>
-            <ResponsiveStackedAreaGraph data={sources_time} height={260} />
+            <ResponsiveStackedAreaGraph 
+              data={sources_time} 
+              height={260} 
+              hoveredGroup={hoveredGroup}
+              setHoveredGroup={setHoveredGroup}
+              />
           </div>
 
           <div style={{ padding: "10px" }}>
@@ -90,7 +106,12 @@ function App() {
             <span className="subtitle">
               Global primary energy in terawatt-hours in 2024
             </span>
-            <ResponsiveDonutChart data={recent_year} height={260} />
+            <ResponsiveDonutChart 
+              data={recent_year} 
+              height={260} 
+              hoveredGroup={hoveredGroup}
+              setHoveredGroup={setHoveredGroup}
+              />
           </div>
 
         </div>
@@ -103,7 +124,12 @@ function App() {
         <span className="subtitle">
           Global renewable energy in terawatt-hours
         </span>
-        <ResponsiveLineChart data={renewable_time} height={300} />
+        <ResponsiveLineChart 
+          data={renewable_time} 
+          height={300} 
+          hoveredGroup={hoveredGroup}
+          setHoveredGroup={setHoveredGroup}
+        />
       </div>
 
     </div>

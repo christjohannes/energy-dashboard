@@ -99,28 +99,28 @@ h2 {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-  border-bottom: "1px dashed #cbcfd1";
-  padding: "10px";
+  border-bottom: 1px dashed #cbcfd1;
+  padding: 10px;
 }
 
 .left {
   width: 50%;
   overflow: hidden;
-  border-right: "1px dashed #cbcfd1"; 
-  padding: "10px"
+  border-right: 1px dashed #cbcfd1; 
+  padding: 10px
 }
 
 .right {
   width: 50%;
   overflow: hidden;
-  padding: "10px"
+  padding: 10px
 }
 
 .bottom {
   width: 50%;
   overflow: hidden;
-  padding: "10px";
-  border-top: "1px dashed #cbcfd1";
+  padding: 10px;
+  border-top: 1px dashed #cbcfd1;
 }
 
 @media (max-width: 650px) {
@@ -132,6 +132,6 @@ h2 {
   .left, .right, .bottom  {
     width: 100%;
     max-width: 100%;
-    border-top: "1px dashed #cbcfd1";
+    border-top: 1px dashed #cbcfd1;
   }
 }

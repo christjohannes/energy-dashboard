@@ -15,11 +15,11 @@ export const KEYS = [
 export const colorScale = d3.scaleOrdinal()
   .domain(KEYS)
   .range([
-    "#b8d8ff",
-    "#7ca2ff",
+    "#a5c6ff",
+    "#91b4ff",
     "#6591ff",
     "#2b6be7",
-    "#0044b6",    
+    "#002a95",    
     "#ff8b53",
     "#e84f1c",
     "#b82100"

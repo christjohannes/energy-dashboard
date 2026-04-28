@@ -3,13 +3,18 @@ import { useDimensions } from "./use-dimensions.js";
 import { AxisBottom } from './AxisBottom.jsx';
 import * as d3 from "d3";
 
-const MARGIN = { top: 30, right: 30, bottom: 30, left: 90 };
+const MARGIN = { top: 10, right: 30, bottom: 20, left: 90 };
 const BAR_PADDING = 0.3;
 
-export const Barplot = ({ width, height, data }: BarplotProps) => {
+export const Barplot = ({ width, height, data, hoveredCountry, setHoveredCountry }: BarplotProps) => {
   // bounds = area inside the graph axis = calculated by substracting the margins
   const boundsWidth = (width - MARGIN.right - MARGIN.left);
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
+
+  const colorScale = d3
+    .scaleSequential()
+    .domain([0, d3.max(data, (d) => d.value)])
+    .interpolator(d3.interpolate("#b9bdbf", "#2b2e30"));
 
   // Y axis is for groups since the barplot is horizontal
   const groups = data.sort((a, b) => b.value - a.value).map((d) => d.name);
@@ -39,17 +44,26 @@ export const Barplot = ({ width, height, data }: BarplotProps) => {
 
     return (
       <g key={i}>
+          <rect
+            x={xScale(0) - MARGIN.left}
+            y={yScale(d.name)}
+            width={boundsWidth}
+            height={yScale.step()}
+            fillOpacity={0}
+            onMouseEnter={() => setHoveredCountry(d.name)}
+            onMouseLeave={() => setHoveredCountry(null)}
+        />
         <rect
           x={xScale(0)}
           y={yScale(d.name)}
           width={xScale(d.value)}
           height={yScale.bandwidth()}
-          opacity={0.7}
-          stroke="#4f80ff"
-          fill="#4f80ff"
-          fillOpacity={0.3}
-          strokeWidth={1}
+          fill={colorScale(d.value)}
+          fillOpacity={hoveredCountry === null || hoveredCountry === d.name
+                ? 0.85
+                : 0.3}
           rx={1}
+          pointerEvents="none"
         />
         <text
           x={xScale(d.value) > 60 ? xScale(d.value) - 5 : xScale(d.value) + 5}
@@ -57,6 +71,13 @@ export const Barplot = ({ width, height, data }: BarplotProps) => {
           textAnchor={xScale(d.value) > 60 ? "end" : "start"}
           alignmentBaseline="central"
           fontSize={12}
+          fill={xScale(d.value) > 60 ? "#fff" : hoveredCountry === d.name
+                ? "#2b2e30"
+                : colorScale(d.value)}
+          fillOpacity={hoveredCountry === d.name
+                ? 1
+                : 0.85}
+          pointerEvents="none"
         >
           {Math.round(d.value).toLocaleString("de-DE")}
         </text>
@@ -66,6 +87,13 @@ export const Barplot = ({ width, height, data }: BarplotProps) => {
           textAnchor="end"
           alignmentBaseline="central"
           fontSize={12}
+          fill={hoveredCountry === d.name
+                ? "#2b2e30"
+                : colorScale(d.value)}
+          fillOpacity={hoveredCountry === d.name
+                ? 1
+                : 0.85}
+          pointerEvents="none"
         >
           {d.name}
         </text>
