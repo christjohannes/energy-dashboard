@@ -6,8 +6,7 @@ import * as d3 from "d3";
 const MARGIN = { top: 10, right: 30, bottom: 20, left: 90 };
 const BAR_PADDING = 0.3;
 
-export const Barplot = ({ width, height, data, hoveredCountry, setHoveredCountry }: BarplotProps) => {
-  // bounds = area inside the graph axis = calculated by substracting the margins
+export const Barplot = ({ width, height, data, hoveredCountry, setHoveredCountry }) => {
   const boundsWidth = (width - MARGIN.right - MARGIN.left);
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
 
@@ -16,7 +15,6 @@ export const Barplot = ({ width, height, data, hoveredCountry, setHoveredCountry
     .domain([0, d3.max(data, (d) => d.value)])
     .interpolator(d3.interpolate("#b9bdbf", "#2b2e30"));
 
-  // Y axis is for groups since the barplot is horizontal
   const groups = data.sort((a, b) => b.value - a.value).map((d) => d.name);
   const yScale = useMemo(() => {
     return d3
@@ -26,7 +24,6 @@ export const Barplot = ({ width, height, data, hoveredCountry, setHoveredCountry
       .padding(BAR_PADDING);
   }, [data, height]);
 
-  // X axis
   const xScale = useMemo(() => {
     const [min, max] = d3.extent(data.map((d) => d.value));
     return d3
@@ -35,7 +32,6 @@ export const Barplot = ({ width, height, data, hoveredCountry, setHoveredCountry
       .range([0, boundsWidth]);
   }, [data, width]);
 
-  // Build the shapes
   const allShapes = data.map((d, i) => {
     const y = yScale(d.name);
     if (y === undefined) {

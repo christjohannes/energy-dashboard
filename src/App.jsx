@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { data } from './data.js'
-import { ResponsiveStackedAreaGraph  } from './StackedAreaGraph.tsx'
-import { ResponsiveBarplot } from './Barplot.tsx'
-import { ResponsiveDonutChart } from './DonutChart.tsx'
-import { ResponsiveLineChart } from './LineChart.tsx'
+import { ResponsiveStackedAreaGraph  } from './StackedAreaGraph.jsx'
+import { ResponsiveBarplot } from './Barplot.jsx'
+import { ResponsiveDonutChart } from './DonutChart.jsx'
+import { ResponsiveLineChart } from './LineChart.jsx'
 import './App.css'
-import { symbolAsterisk } from 'd3'
 
 const sources_time = data
   .filter(d => d.country === "World")
@@ -57,7 +56,6 @@ const renewable_time = {
 };
 
 function App() {
-  const [count, setCount] = useState(0)
   const [hoveredGroup, setHoveredGroup] = useState(null);
   const [hoveredCountry, setHoveredCountry] = useState(null);
 
@@ -126,9 +124,7 @@ function App() {
         </span>
         <ResponsiveLineChart 
           data={renewable_time} 
-          height={300} 
-          hoveredGroup={hoveredGroup}
-          setHoveredGroup={setHoveredGroup}
+          height={300}
         />
       </div>
 

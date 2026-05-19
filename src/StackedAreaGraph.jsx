@@ -11,9 +11,9 @@ export const StackedAreaGraph  = ({
   width,
   height,
   data,
-  hoveredGroup, 
+  hoveredGroup,
   setHoveredGroup
-}: StackedAreaGraphProps) => {
+}) => {
 
   const axesRef = useRef(null);
   const boundsWidth = width - MARGIN.right - MARGIN.left;
@@ -26,12 +26,12 @@ export const StackedAreaGraph  = ({
     .offset(d3.stackOffsetNone);
   const series = stackSeries(data);
 
-  // Y axis
   const max = useMemo(() => {
   return d3.max(series, layer =>
     d3.max(layer, d => d[1])
   );
 }, [series]);
+
   const yScale = useMemo(() => {
     return d3
       .scaleLinear()
@@ -39,8 +39,8 @@ export const StackedAreaGraph  = ({
       .range([boundsHeight, 0]);
   }, [data, height]);
 
-  // X axis
   const [xMin, xMax] = d3.extent(data, (d) => d.x);
+
   const xScale = useMemo(() => {
     return d3
       .scaleLinear()
@@ -49,7 +49,7 @@ export const StackedAreaGraph  = ({
   }, [data, width]);
 
   const areaBuilder = d3
-    .area<any>()
+    .area()
     .x((d) => {
       return xScale(d.data.x);
     })
@@ -78,9 +78,9 @@ export const StackedAreaGraph  = ({
 
   const legend = KEYS.map((key, i) => (
     <g key={key} transform={`translate(0, ${i * 16})`}>
-        <rect 
-          width={12} 
-          height={12} 
+        <rect
+          width={12}
+          height={12}
           fill={colorScale(key)}
           fillOpacity={
             hoveredGroup === null || hoveredGroup === key

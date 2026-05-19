@@ -123,6 +123,43 @@ h2 {
   border-top: 1px dashed #cbcfd1;
 }
 
+.tooltip {
+  position: absolute;
+  background-color: rgb(255, 255, 255, 0.7);
+  font-family: InterRegular;
+  min-width: 100px;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  padding: 4px 8px;
+  max-width: 160px;
+  font-size: 12px;
+}
+
+.tooltip_name,
+.tooltip_year,
+.tooltip_value {
+  line-height: 1.4;
+  margin: 0;
+}
+
+.tooltip_name {
+  font-family: InterBold;
+  margin-bottom: 2px;
+}
+
+.tooltip_year {
+  color: #0f151a;
+}
+
+.tooltip_value {
+  color: #0f151a;
+  font-family: InterBold;
+}
+
+.tooltip p {
+  margin: 2px 0;
+}
+
 @media (max-width: 650px) {
   .top {
     flex-direction: column;

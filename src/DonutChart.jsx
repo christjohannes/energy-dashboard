@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { useDimensions } from "./use-dimensions.js";
 import { colorScale } from "./colors";
 import * as d3 from "d3";
@@ -7,20 +7,19 @@ const MARGIN_X = 60;
 const MARGIN_Y = 60;
 const INFLEXION_PADDING = 30;
 
-export const DonutChart = ({ width, height, data, hoveredGroup, setHoveredGroup }: DonutChartProps) => {
-  
+export const DonutChart = ({ width, height, data, hoveredGroup, setHoveredGroup }) => {
+
   const radius = Math.min(width - 2 * MARGIN_X, height - 2 * MARGIN_Y) / 2;
   const innerRadius = radius / 2;
 
   const pie = useMemo(() => {
-    const pieGenerator = d3.pie<any, DataItem>().value((d) => d.value);
+    const pieGenerator = d3.pie().value((d) => d.value);
     return pieGenerator(data);
   }, [data]);
 
   const arcGenerator = d3.arc();
 
   const shapes = pie.map((group, i) => {
-    // First arc is for the donut
     const sliceInfo = {
       innerRadius,
       outerRadius: radius,
@@ -30,7 +29,6 @@ export const DonutChart = ({ width, height, data, hoveredGroup, setHoveredGroup 
     const centroid = arcGenerator.centroid(sliceInfo);
     const slicePath = arcGenerator(sliceInfo);
 
-    // Second arc is for the legend inflexion point
     const inflexionInfo = {
       innerRadius: radius + INFLEXION_PADDING,
       outerRadius: radius + INFLEXION_PADDING,
@@ -46,16 +44,16 @@ export const DonutChart = ({ width, height, data, hoveredGroup, setHoveredGroup 
 
     return (
       <g key={i}>
-        <path 
-          d={slicePath} 
+        <path
+          d={slicePath}
           fill={colorScale(group.data.name)}
           onMouseEnter={() => setHoveredGroup(group.data.name)}
           onMouseLeave={() => setHoveredGroup(null)}
           opacity={hoveredGroup === null || hoveredGroup === group.data.name ? 1 : 0.4}
         />
-        <circle 
-          cx={centroid[0]} 
-          cy={centroid[1]} r={2} 
+        <circle
+          cx={centroid[0]}
+          cy={centroid[1]} r={2}
           fill={"#6f7374"}
           pointerEvents="none"
           />
