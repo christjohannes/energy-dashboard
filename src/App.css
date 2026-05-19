@@ -135,6 +135,28 @@ h2 {
   font-size: 12px;
 }
 
+.tooltip:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent var(--border-color) transparent transparent;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.tooltip--left:after {
+  border-color: transparent transparent transparent var(--border-color, black);
+  left: auto;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .tooltip_name,
 .tooltip_year,
 .tooltip_value {

@@ -9,7 +9,7 @@ export const Tooltip = ({ interactionData }) => {
     <div
       className={`${placement === "left" ? "tooltip tooltip--left" : "tooltip"}`}
       style={{
-        left: placement === "left" ? xPos - 5 : xPos + 5,
+        left: placement === "left" ? xPos - 10 : xPos + 10,
         top: yPos,
         transform: placement === "left" ? "translateX(-100%) translateY(-50%)" : "translateY(-50%)",
         borderColor: color,
