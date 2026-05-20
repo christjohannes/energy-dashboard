@@ -30,7 +30,7 @@ const countries = data
   .sort((a, b) => b.value - a.value);
 
 const recent_year = data
-  .filter(d => d.country == "World" && d.year === 2024)
+  .filter(d => d.country == "World")
   .flatMap(d => Object.entries({
     coal: d.coal,
     oil: d.oil,
@@ -40,7 +40,7 @@ const recent_year = data
     solar: d.solar,
     wind: d.wind,
     "other renewable": d.other_renewable + d.biofuel
-  }).map(([name, value]) => ({ name, value })))
+  }).map(([name, value]) => ({ name, value, year: d.year })))
 
 const data_filtered = data.filter(d => d.country === "World");
 
@@ -58,6 +58,7 @@ const renewable_time = {
 function App() {
   const [hoveredGroup, setHoveredGroup] = useState(null);
   const [hoveredCountry, setHoveredCountry] = useState(null);
+  const [hoveredYear, setHoveredYear] = useState(null);
 
   return (
     <>
@@ -91,24 +92,27 @@ function App() {
             <span className="subtitle">
               Global primary energy in terawatt-hours
             </span>
-            <ResponsiveStackedAreaGraph 
-              data={sources_time} 
-              height={260} 
+            <ResponsiveStackedAreaGraph
+              data={sources_time}
+              height={260}
               hoveredGroup={hoveredGroup}
               setHoveredGroup={setHoveredGroup}
+              hoveredYear={hoveredYear}
+              setHoveredYear={setHoveredYear}
               />
           </div>
 
           <div style={{ padding: "10px" }}>
-            <h2>Global energy mix in 2024</h2>
+            <h2>Global energy mix in {hoveredYear ?? 2024}</h2>
             <span className="subtitle">
-              Global primary energy in terawatt-hours in 2024
+              Global primary energy in terawatt-hours
             </span>
             <ResponsiveDonutChart 
               data={recent_year} 
               height={260} 
               hoveredGroup={hoveredGroup}
               setHoveredGroup={setHoveredGroup}
+              hoveredYear={hoveredYear}
               />
           </div>
 
@@ -122,9 +126,13 @@ function App() {
         <span className="subtitle">
           Global renewable energy in terawatt-hours
         </span>
-        <ResponsiveLineChart 
-          data={renewable_time} 
+        <ResponsiveLineChart
+          data={renewable_time}
           height={300}
+          hoveredGroup={hoveredGroup}
+          setHoveredGroup={setHoveredGroup}
+          hoveredYear={hoveredYear}
+          setHoveredYear={setHoveredYear}
         />
       </div>
 

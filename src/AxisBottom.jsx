@@ -1,6 +1,6 @@
 const TICK_LENGTH = 6;
 
-export const AxisBottom = ({ xScale, boundsHeight, pixelsPerTick, label, axisLineStrokeOpacity, gridOpacity, tickFormat }) => {
+export const AxisBottom = ({ xScale, boundsHeight, pixelsPerTick, label, axisLineStrokeOpacity, gridOpacity, tickFormat, hoveredXPos }) => {
   const range = xScale.range();
   const width = range[1] - range[0];
   const numberOfTicksTarget = Math.floor(width / pixelsPerTick);
@@ -14,15 +14,17 @@ export const AxisBottom = ({ xScale, boundsHeight, pixelsPerTick, label, axisLin
       {xScale.ticks(numberOfTicksTarget).map((value) => (
         <g key={value} transform={`translate(${xScale(value)}, 0)`}>
           <line y2={TICK_LENGTH} stroke="currentColor" />
-          <text
-            style={{
-              fontSize: "12px",
-              textAnchor: "middle",
-              transform: "translateY(20px)"
-            }}
-          >
-            {tickFormat == "year" ? value : value.toLocaleString("de-DE")}
-          </text>
+          {(hoveredXPos == null || Math.abs(xScale(value) - hoveredXPos) > 30) && (
+            <text
+              style={{
+                fontSize: "12px",
+                textAnchor: "middle",
+                transform: "translateY(20px)"
+              }}
+            >
+              {tickFormat == "year" ? value : value.toLocaleString("de-DE")}
+            </text>
+          )}
         </g>
       ))}
 

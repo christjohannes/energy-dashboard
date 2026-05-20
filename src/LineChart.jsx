@@ -6,16 +6,21 @@ import { colorScale } from "./colors";
 import { Tooltip } from "./Tooltip.jsx";
 import * as d3 from "d3";
 
-const MARGIN = { top: 10, right: 120, bottom: 50, left: 60 };
+const MARGIN = { top: 10, right: 60, bottom: 50, left: 60 };
 
 export function LineChart({
     width,
     height,
-    data
+    data,
+    hoveredGroup,
+    setHoveredGroup,
+    hoveredYear,
+    setHoveredYear
 }) {
   const [interactionData, setInteractionData] = useState(null);
   const allPoints = Object.values(data).flat();
   const groups = Object.keys(data);
+  const activeXValue = interactionData?.xValue ?? hoveredYear;
 
   const boundsWidth = width - MARGIN.right - MARGIN.left;
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
@@ -63,6 +68,8 @@ export function LineChart({
     }
     if (!nearest) return;
 
+    setHoveredGroup(nearest.group);
+    setHoveredYear(nearest.point.x);
     setInteractionData({
       xPos: xScale(nearest.point.x) + MARGIN.left,
       yPos: yScale(nearest.point.y) + MARGIN.top,
@@ -79,10 +86,10 @@ export function LineChart({
     <svg width={width} height={height}>
       <g transform={`translate(${MARGIN.left}, ${MARGIN.top})`}>
 
-        {interactionData && (
+        {activeXValue != null && (
           <line
-            x1={interactionData.xPos - MARGIN.left}
-            x2={interactionData.xPos - MARGIN.left}
+            x1={xScale(activeXValue)}
+            x2={xScale(activeXValue)}
             y1={0}
             y2={boundsHeight}
             stroke="#99AFC2"
@@ -92,22 +99,21 @@ export function LineChart({
           />
         )}
 
-        {interactionData && (
+        {activeXValue != null && (
           <text
-            x={interactionData.xPos - MARGIN.left + 3}
-            y={0 + MARGIN.top}
-            textAnchor="start"
-            alignmentBaseline="central"
+            x={xScale(activeXValue)}
+            y={boundsHeight + 20}
+            textAnchor="middle"
             style={{fontFamily: "InterBold"}}
             pointerEvents="none"
-          >{interactionData.xValue}</text>
+          >{activeXValue}</text>
         )}
 
-        {interactionData && groups.map((d) => {
+        {activeXValue != null && groups.map((d) => {
           const points = data[d];
-          const index = bisect(points, interactionData.xValue);
+          const index = bisect(points, activeXValue);
           const p = [points[index - 1], points[index]].filter(Boolean).reduce((a, b) =>
-            Math.abs(a.x - interactionData.xValue) <= Math.abs(b.x - interactionData.xValue) ? a : b
+            Math.abs(a.x - activeXValue) <= Math.abs(b.x - activeXValue) ? a : b
           );
           return (
             <circle
@@ -150,7 +156,8 @@ export function LineChart({
                 d={lineBuilder(points)}
                 fill="none"
                 stroke={colorScale(d)}
-                strokeWidth={1.5}
+                strokeWidth={hoveredGroup === d ? 3 : 1.5}
+                strokeOpacity={hoveredGroup == null || hoveredGroup === d ? 1 : 0.4}
                 pointerEvents="none"
               />
               <text
@@ -160,8 +167,9 @@ export function LineChart({
                 alignmentBaseline="central"
                 style={{fontFamily: "InterBold"}}
                 fill={colorScale(d)}
+                fillOpacity={hoveredGroup == null || hoveredGroup === d ? 1 : 0.4}
               >
-                {d.replace("other renewable", "other")}{hoveredValue !== null ? `: ${Math.round(hoveredValue).toLocaleString()}` : ""}
+                {d.replace("other renewable", "other")}
               </text>
             </g>
           );
@@ -176,6 +184,7 @@ export function LineChart({
             gridOpacity={0}
             tickFormat={"year"}
             label=""
+            hoveredXPos={interactionData?.xPos - MARGIN.left}
           />
         </g>
 
@@ -195,7 +204,7 @@ export function LineChart({
         height={height}
         fill="transparent"
         onMouseMove={handleMouseMove}
-        onMouseLeave={() => setInteractionData(null)}
+        onMouseLeave={() => { setInteractionData(null); setHoveredGroup(null); setHoveredYear(null); }}
       />
     </svg>
       <div

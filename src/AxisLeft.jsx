@@ -38,7 +38,7 @@ export const AxisLeft = ({ yScale, pixelsPerTick, boundsWidth, label, gridOpacit
 
         {label && (
         <text
-          x={-35}
+          x={-60}
           y={-20}
           fontSize={12}
           textAnchor="start"
