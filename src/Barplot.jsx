@@ -6,33 +6,33 @@ import * as d3 from "d3";
 const MARGIN = { top: 10, right: 30, bottom: 20, left: 90 };
 const BAR_PADDING = 0.3;
 
-export const Barplot = ({ width, height, data, hoveredCountry, setHoveredCountry }) => {
+export const Barplot = ({ width, height, data, hoveredCountry, setHoveredCountry, hoveredYear }) => {
+  const countries = data.filter(d => d.year == (hoveredYear ?? 2024));
   const boundsWidth = (width - MARGIN.right - MARGIN.left);
   const boundsHeight = height - MARGIN.top - MARGIN.bottom;
-
   const colorScale = d3
     .scaleSequential()
-    .domain([0, d3.max(data, (d) => d.value)])
+    .domain([0, d3.max(countries, (d) => d.value)])
     .interpolator(d3.interpolate("#b9bdbf", "#2b2e30"));
 
-  const groups = data.sort((a, b) => b.value - a.value).map((d) => d.name);
+  const groups = countries.sort((a, b) => b.value - a.value).map((d) => d.name);
   const yScale = useMemo(() => {
     return d3
       .scaleBand()
       .domain(groups)
       .range([0, boundsHeight])
       .padding(BAR_PADDING);
-  }, [data, height]);
+  }, [countries, height]);
 
   const xScale = useMemo(() => {
-    const [min, max] = d3.extent(data.map((d) => d.value));
+    const [min, max] = d3.extent(countries.map((d) => d.value));
     return d3
       .scaleLinear()
-      .domain([0, max || 10])
+      .domain([0, 50000 || 10])
       .range([0, boundsWidth]);
-  }, [data, width]);
+  }, [countries, width]);
 
-  const allShapes = data.map((d, i) => {
+  const allShapes = countries.map((d, i) => {
     const y = yScale(d.name);
     if (y === undefined) {
       return null;

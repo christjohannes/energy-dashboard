@@ -22,10 +22,11 @@ const sources_time = data
 
 
 const countries = data
-  .filter(d => d.country !== "World" && d.year === 2024)
+  .filter(d => d.country !== "World")
   .map(d => ({
     name: d.country.replace("United Kingdom", "UK").replace("United Arab Emirates", "UAE"),
-    value: d.primary_energy
+    value: d.primary_energy,
+    year: d.year
   }))
   .sort((a, b) => b.value - a.value);
 
@@ -72,15 +73,16 @@ function App() {
           className="left"
           style={{ borderRight: "1px dashed #cbcfd1", padding: "10px" }}
         >
-          <h2>Energy consumption</h2>
+          <h2>Energy consumption in {hoveredYear ?? 2024}</h2>
           <span className="subtitle">
-            Primary energy in terawatt-hours in 2024
+            Primary energy in terawatt-hours
           </span>
-          <ResponsiveBarplot 
-            data={countries} 
-            height={620} 
+          <ResponsiveBarplot
+            data={countries}
+            height={620}
             hoveredCountry={hoveredCountry}
             setHoveredCountry={setHoveredCountry}
+            hoveredYear={hoveredYear}
               />
         </div>
 
